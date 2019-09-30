@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springbootbill.mapper.BillMapper">
+    <select id="getBillById" resultType="com.example.springbootbill.entities.BillProvider">
+      select b.*,p.providerName from bill b
+      left join provider p on b.pid=p.pid
+      where b.bid = #{bid}
+    </select>
+
+    <select id="getBills" resultType="com.example.springbootbill.entities.BillProvider">
+        select b.*,p.providerName from bill b
+        left join provider p
+        on b.pid = p.pid
+        where 1 = 1
+        <if test="billName != null and billName!=''">
+            and b.bill_name like '%${billName}%'
+        </if>
+        <if test="pid != null">
+            and b.pid = #{pid}
+        </if>
+        <if test="pay != null">
+            and b.pay = #{pay}
+        </if>
+    </select>
+
+    <select id="getPidAndProviderName" resultType="com.example.springbootbill.entities.BillProvider">
+        SELECT b.pid,p.providerName
+        FROM bill b LEFT JOIN provider p
+        ON b.pid = p.pid
+        GROUP BY b.pid;
+    </select>
+
+    <select id="getPayStat" resultType="com.example.springbootbill.entities.BillProvider">
+        SELECT pay FROM bill GROUP BY pay;
+    </select>
+    <insert id="insertBill">
+       INSERT INTO `bill`
+        (`bill_code`, `bill_name`, `bill_com`, `bill_num`, `money`, `pay`, `pid`, `create_date`)
+       VALUES (#{billCode}, #{billName}, #{billCom}, #{billNum}, #{money}, #{pay}, #{pid}, now());
+    </insert>
+    
+    <delete id="deleteBill">
+        delete from bill where bid = #{bid}
+    </delete>
+    
+    <update id="updateBill">
+        UPDATE `bill` SET `bill_code`=#{billCode}, `bill_name`=#{billName}, `bill_com`=#{billCom},
+         `bill_num`=#{billNum}, `money`=#{money}, `pay`=#{pay},
+          `pid`=#{pid}, `create_date`=#{createDate}
+        WHERE (`bid`=#{bid});
+    </update>
+</mapper>
