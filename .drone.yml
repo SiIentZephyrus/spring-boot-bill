@@ -1,14 +1,8 @@
-steps:
- - name: build
-    image: maven
-    volumes:
-      - name: cache # The Volume's name
-        path: /root/.m2 # The path in the container
-    commands:
-      #- mvn help:effective-settings # check maven
-      - mvn clean package -DskipTests
-volumes:
-  - name: cache # The name use in this pipeline,
-    host:
-      path: /var/lib/cache # The path be used in the host.
 
+
+steps:
+- name: test
+  image: maven:3-jdk-8
+  commands:
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - mvn test -B
