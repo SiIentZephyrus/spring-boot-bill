@@ -4,5 +4,5 @@ steps:
 - name: test
   image: maven:3-jdk-8
   commands:
-  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-  - mvn test -B
+  - echo "准备测试"
+  - pwd
