@@ -6,7 +6,7 @@ steps:
   commands:
   - echo "准备测试"
   - pwd
-step:
+steps:
 - name: run
   image: java:8
   commands:
