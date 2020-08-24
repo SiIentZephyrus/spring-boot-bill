@@ -4,11 +4,12 @@ steps:
 - name: test
   image: maven:3-jdk-8
   commands:
-  - echo "准备测试"
-  - pwd
+  - mvn install
+  - mvn package
 steps:
 - name: run
   image: java:8
   commands:
-  - echo "运行jdk镜像"
-  - java
+  - cd ./target
+  - pwd
+  - ll
